@@ -33,8 +33,13 @@ target_sources(
 		${CMAKE_CURRENT_LIST_DIR}/src/main.c
 		${CMAKE_CURRENT_LIST_DIR}/src/result.c
 		${CMAKE_CURRENT_LIST_DIR}/src/log.c
+		${CMAKE_CURRENT_LIST_DIR}/src/display.c
+		${CMAKE_CURRENT_LIST_DIR}/src/settings.c
 		${CMAKE_CURRENT_LIST_DIR}/src/context.c
 
+		${CMAKE_CURRENT_LIST_DIR}/include/game/detail.h
 		${CMAKE_CURRENT_LIST_DIR}/include/game/result.h
 		${CMAKE_CURRENT_LIST_DIR}/include/game/log.h
+		${CMAKE_CURRENT_LIST_DIR}/include/game/display.h
+		${CMAKE_CURRENT_LIST_DIR}/include/game/settings.h
 		${CMAKE_CURRENT_LIST_DIR}/include/game/context.h)

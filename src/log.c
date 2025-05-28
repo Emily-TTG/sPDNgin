@@ -9,10 +9,18 @@ void gm_log_variadic(
 	int written;
 
 	written = printf("%s:%d in %s(): ", file, line, function);
-	if(written < 0) perror("printf");
+	if(written < 0) {
+		perror("printf");
+	}
 
 	written = vprintf(format, list);
-	if(written < 0) perror("printf");
+	if(written < 0) {
+		perror("printf");
+	}
+
+	if(putchar('\n') == EOF) {
+		perror("putchar");
+	}
 }
 
 void gm_log(
