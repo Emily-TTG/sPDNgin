@@ -21,8 +21,20 @@ include(${CMAKE_CURRENT_LIST_DIR}/cmake/utilities.cmake)
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/vendor)
 
 add_executable(game WIN32)
+target_compile_features(game PRIVATE c_std_23)
 
-target_sources(game PRIVATE ${CMAKE_CURRENT_LIST_DIR}/src/main.c)
-target_include_directories(game PRIVATE include)
+cxx_default_diagnostics(game)
 
 target_link_libraries(game PRIVATE allegro)
+
+target_include_directories(game PRIVATE include)
+target_sources(
+		game PRIVATE
+		${CMAKE_CURRENT_LIST_DIR}/src/main.c
+		${CMAKE_CURRENT_LIST_DIR}/src/result.c
+		${CMAKE_CURRENT_LIST_DIR}/src/log.c
+		${CMAKE_CURRENT_LIST_DIR}/src/context.c
+
+		${CMAKE_CURRENT_LIST_DIR}/include/game/result.h
+		${CMAKE_CURRENT_LIST_DIR}/include/game/log.h
+		${CMAKE_CURRENT_LIST_DIR}/include/game/context.h)
