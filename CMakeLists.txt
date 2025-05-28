@@ -25,7 +25,7 @@ target_compile_features(game PRIVATE c_std_23)
 
 cxx_default_diagnostics(game)
 
-target_link_libraries(game PRIVATE allegro)
+target_link_libraries(game PRIVATE allegro nuklear)
 
 target_include_directories(game PRIVATE include)
 target_sources(
