@@ -18,3 +18,6 @@ struct gm_context {
 
 enum gm_result gm_context_new(struct gm_context*, int, char**);
 void gm_context_delete(struct gm_context*);
+
+// Blocks until user-initiated exit.
+enum gm_result gm_context_loop(struct gm_context*);

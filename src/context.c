@@ -12,12 +12,14 @@ static enum gm_result gm_context_install_events(struct gm_context* context) {
 		gm_context_delete(context);
 		return GM_LOG_RESULT(al_create_timer, GM_RESULT_ERROR);
 	}
+	detail->game_timer = timer;
 
 	ALLEGRO_EVENT_QUEUE* queue = al_create_event_queue();
 	if(!queue) {
 		gm_context_delete(context);
 		return GM_LOG_RESULT(al_create_timer, GM_RESULT_ERROR);
 	}
+	detail->event_queue = queue;
 
 	if(!al_install_keyboard()) {
 		gm_context_delete(context);
@@ -29,8 +31,21 @@ static enum gm_result gm_context_install_events(struct gm_context* context) {
 		// TODO: Inform user that joystick support is disabled.
 	}
 
-	detail->game_timer = timer;
-	detail->event_queue = queue;
+	ALLEGRO_EVENT_SOURCE* source = al_get_keyboard_event_source();
+	al_register_event_source(queue, source);
+
+	source = al_get_joystick_event_source();
+	if(source) {
+		al_register_event_source(queue, source);
+	}
+
+	source = al_get_display_event_source(context->display->display);
+	al_register_event_source(queue, source);
+
+	source = al_get_timer_event_source(timer);
+	al_register_event_source(queue, source);
+
+	al_start_timer(timer);
 
 	return GM_RESULT_OK;
 }
@@ -74,4 +89,23 @@ void gm_context_delete(struct gm_context* context) {
 	gm_display_delete(context->display);
 
 	// TODO: Can we meaningfully teardown Allegro global state?
+}
+
+enum gm_result gm_context_loop(struct gm_context* context) {
+	auto detail = context->detail;
+
+	ALLEGRO_EVENT event;
+	while(true) {
+		al_wait_for_event(detail->event_queue, &event);
+
+		switch(event.type) {
+			default: break;
+
+			case ALLEGRO_EVENT_DISPLAY_CLOSE: goto end_loop;
+		}
+	}
+
+	end_loop:;
+
+	return GM_RESULT_OK;
 }

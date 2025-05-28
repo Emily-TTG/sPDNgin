@@ -24,6 +24,11 @@ static enum gm_result gm_main(int argc, char** argv) {
 		return GM_LOG_RESULT("gm_context_new", result);
 	}
 
+	result = gm_context_loop(&context);
+	if(result) {
+		return GM_LOG_RESULT("gm_context_loop", result);
+	}
+
 	gm_context_delete(&context);
 
 	return GM_RESULT_OK;
