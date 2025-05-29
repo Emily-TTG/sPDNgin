@@ -32,7 +32,9 @@ target_compile_definitions(
 		NK_INCLUDE_DEFAULT_ALLOCATOR=1
 		NK_INCLUDE_STANDARD_IO=1
 		NK_INCLUDE_STANDARD_VARARGS=1
-		NK_INCLUDE_STANDARD_BOOL=1
+		# TODO: This is currently broken by
+		#       https://github.com/Immediate-Mode-UI/Nuklear/issues/812
+		#NK_INCLUDE_STANDARD_BOOL=1
 		NK_INCLUDE_FONT_BAKING=1)
 
 add_library(nuklear STATIC)
