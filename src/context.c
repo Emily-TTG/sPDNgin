@@ -5,7 +5,7 @@
 #include <game/display.h>
 #include <game/ui.h>
 
-#include <game/local/update.h>
+#include <game/local/local.h>
 
 static enum gm_result gm_context_install_events(struct gm_context* context) {
 	auto detail = context->detail;
@@ -153,6 +153,16 @@ enum gm_result gm_context_loop(struct gm_context* context) {
 	bool tick_render = false;
 	bool exit = false;
 
+	result = gm_local_start_game(context);
+	if(result) {
+		return GM_LOG_RESULT(gm_local_start_game, result);
+	}
+
+	result = gm_local_start_render(context);
+	if(result) {
+		return GM_LOG_RESULT(gm_local_start_render, result);
+	}
+
 	while(!exit) {
 		al_wait_for_event(detail->event_queue, &event);
 
@@ -172,17 +182,16 @@ enum gm_result gm_context_loop(struct gm_context* context) {
 
 
 		if(tick_game) {
-			// TODO: Game logic update.
-			result = gm_local_tick(context);
+			result = gm_local_tick_game(context);
 			if(result) {
-				(void) GM_LOG_RESULT(gm_local_tick, result);
+				(void) GM_LOG_RESULT(gm_local_tick_game, result);
 			}
 		}
 
 		if(tick_render) {
-			result = gm_local_render(context);
+			result = gm_local_tick_render(context);
 			if(result) {
-				(void) GM_LOG_RESULT(gm_local_render, result);
+				(void) GM_LOG_RESULT(gm_local_tick_render, result);
 			}
 
 			nk_allegro5_render();

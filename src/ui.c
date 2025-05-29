@@ -50,7 +50,7 @@ enum gm_result gm_ui_new(struct gm_ui* ui, struct gm_context* context) {
 	// TODO: Font size/scaling config.
 	// TODO: Separate out font loading infrastructure.
 	const char* path = "res/font/unitblock/unitblock.ttf";
-	ui->font = nk_allegro5_font_create_from_file(path, 13, 0);
+	ui->font = nk_allegro5_font_create_from_file(path, 18, 0);
 	if(!ui->font) {
 		return GM_LOG_RESULT_PATH(al_fopen, path, GM_RESULT_ERROR);
 	}
