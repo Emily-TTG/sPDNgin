@@ -9,3 +9,9 @@
 	url = https://github.com/Immediate-Mode-UI/Nuklear
 	ignore = dirty
 	shallow = true
+
+[submodule "vendor/flecs"]
+	path = vendor/flecs
+	url = https://github.com/SanderMertens/flecs
+	ignore = dirty
+	shallow = true
