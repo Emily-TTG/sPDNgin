@@ -163,7 +163,7 @@ enum gm_result gm_context_loop(struct gm_context* context) {
 				tick_render = (timer.source == context->detail->render_timer);
 			}
 			else gm_context_handle_event(context, &event, &exit);
-		} while((al_get_next_event(detail->event_queue, &event)));
+		} while(al_get_next_event(detail->event_queue, &event));
 		nk_input_end(ui->context);
 
 
@@ -172,7 +172,8 @@ enum gm_result gm_context_loop(struct gm_context* context) {
 		}
 
 		if(tick_render) {
-			if(nk_begin(ui->context, "game", nk_rect(50, 50, 220, 220), NK_WINDOW_BORDER)) {
+			struct nk_rect area = nk_rect(50, 50, 220, 220);
+			if(nk_begin(ui->context, "game", area, NK_WINDOW_BORDER)) {
 				nk_layout_row_static(ui->context, 30, 80, 1);
 				if(nk_button_label(ui->context, "button")) {
 					GM_LOG("Hello, Nuklear!");

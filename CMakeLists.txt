@@ -21,6 +21,7 @@ find_library(MATH_LIBRARY m)
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/utilities.cmake)
 
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/vendor)
+add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/tool)
 
 add_executable(game WIN32)
 target_compile_features(game PRIVATE c_std_23)
