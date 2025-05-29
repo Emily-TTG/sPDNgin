@@ -124,37 +124,13 @@ void gm_context_delete(struct gm_context* context) {
 static enum gm_result gm_context_handle_event(
 		struct gm_context* context, ALLEGRO_EVENT* event, bool* exit) {
 
+	(void) context;
+
 	switch(event->type) {
 		default: break;
 
 		case ALLEGRO_EVENT_DISPLAY_CLOSE: {
 			*exit = true;
-			break;
-		}
-
-		case ALLEGRO_EVENT_TIMER: {
-			auto ui = context->ui;
-
-			auto timer = event->timer;
-
-			if(timer.source == context->detail->game_timer) {
-				// TODO: Game logic update.
-			}
-			else if(timer.source == context->detail->render_timer) {
-				// TODO: App config for window title etc.
-				if(nk_begin(ui->context, "game", nk_rect(50, 50, 220, 220), NK_WINDOW_BORDER)) {
-					nk_layout_row_static(ui->context, 30, 80, 1);
-					if(nk_button_label(ui->context, "button")) {
-						GM_LOG("Hello, Nuklear!");
-					}
-				}
-				nk_end(ui->context);
-
-				nk_allegro5_render();
-				// TODO: Sync rules?
-				al_flip_display();
-			}
-
 			break;
 		}
 	}
@@ -168,6 +144,8 @@ enum gm_result gm_context_loop(struct gm_context* context) {
 
 	ALLEGRO_EVENT event;
 
+	bool tick_game = false;
+	bool tick_render = false;
 	bool exit = false;
 
 	while(!exit) {
@@ -176,9 +154,36 @@ enum gm_result gm_context_loop(struct gm_context* context) {
 		nk_input_begin(ui->context);
 		do {
 			nk_allegro5_handle_event(&event);
-			gm_context_handle_event(context, &event, &exit);
+
+			if(event.type == ALLEGRO_EVENT_TIMER) {
+				auto timer = event.timer;
+
+				tick_game = (timer.source == context->detail->game_timer);
+				tick_render = (timer.source == context->detail->render_timer);
+			}
+			else gm_context_handle_event(context, &event, &exit);
 		} while((al_get_next_event(detail->event_queue, &event)));
 		nk_input_end(ui->context);
+
+
+		if(tick_game) {
+			// TODO: Game logic update.
+		}
+
+		if(tick_render) {
+			// TODO: App config for window title etc.
+			if(nk_begin(ui->context, "game", nk_rect(50, 50, 220, 220), NK_WINDOW_BORDER)) {
+				nk_layout_row_static(ui->context, 30, 80, 1);
+				if(nk_button_label(ui->context, "button")) {
+					GM_LOG("Hello, Nuklear!");
+				}
+			}
+			nk_end(ui->context);
+
+			nk_allegro5_render();
+			// TODO: Sync rules?
+			al_flip_display();
+		}
 	}
 
 	return GM_RESULT_OK;
