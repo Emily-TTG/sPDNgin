@@ -5,6 +5,8 @@
 #include <game/display.h>
 #include <game/ui.h>
 
+#include <game/local/update.h>
+
 static enum gm_result gm_context_install_events(struct gm_context* context) {
 	auto detail = context->detail;
 
@@ -140,6 +142,8 @@ static enum gm_result gm_context_handle_event(
 }
 
 enum gm_result gm_context_loop(struct gm_context* context) {
+	enum gm_result result;
+
 	auto detail = context->detail;
 	auto ui = context->ui;
 
@@ -169,17 +173,17 @@ enum gm_result gm_context_loop(struct gm_context* context) {
 
 		if(tick_game) {
 			// TODO: Game logic update.
+			result = gm_local_tick(context);
+			if(result) {
+				(void) GM_LOG_RESULT(gm_local_tick, result);
+			}
 		}
 
 		if(tick_render) {
-			struct nk_rect area = nk_rect(50, 50, 220, 220);
-			if(nk_begin(ui->context, "game", area, NK_WINDOW_BORDER)) {
-				nk_layout_row_static(ui->context, 30, 80, 1);
-				if(nk_button_label(ui->context, "button")) {
-					GM_LOG("Hello, Nuklear!");
-				}
+			result = gm_local_render(context);
+			if(result) {
+				(void) GM_LOG_RESULT(gm_local_render, result);
 			}
-			nk_end(ui->context);
 
 			nk_allegro5_render();
 			// TODO: Sync rules?

@@ -60,7 +60,9 @@ enum gm_result gm_ui_new(struct gm_ui* ui, struct gm_context* context) {
 			settings->width, settings->height);
 
 	result = gm_ui_load_style(ui, "res/style/game_nk_style.bin");
-	(void) GM_LOG_RESULT(gm_ui_load_style, result);
+	if(result) {
+		(void) GM_LOG_RESULT(gm_ui_load_style, result);
+	}
 
 	return GM_RESULT_OK;
 }

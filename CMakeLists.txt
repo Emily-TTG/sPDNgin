@@ -48,3 +48,10 @@ target_sources(
 		${CMAKE_CURRENT_LIST_DIR}/include/game/settings.h
 		${CMAKE_CURRENT_LIST_DIR}/include/game/ui.h
 		${CMAKE_CURRENT_LIST_DIR}/include/game/context.h)
+
+target_sources(
+		game PRIVATE
+		${CMAKE_CURRENT_LIST_DIR}/src/local/tick.c
+		${CMAKE_CURRENT_LIST_DIR}/src/local/render.c
+
+		${CMAKE_CURRENT_LIST_DIR}/include/game/local/update.h)
