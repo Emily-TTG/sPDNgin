@@ -5,7 +5,7 @@
 #include <game/log.h>
 
 enum gm_result gm_display_new(
-		struct gm_context* context, struct gm_display* display) {
+		struct gm_display* display, struct gm_context* context) {
 
 	auto settings = context->settings;
 

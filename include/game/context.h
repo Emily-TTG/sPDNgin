@@ -8,12 +8,16 @@ struct gm_context_detail;
 
 struct gm_settings;
 struct gm_display;
+struct gm_ui;
+
+struct nk_context;
 
 struct gm_context {
 	struct gm_context_detail* detail;
 
 	struct gm_settings* settings;
 	struct gm_display* display;
+	struct gm_ui* ui;
 };
 
 enum gm_result gm_context_new(struct gm_context*, int, char**);

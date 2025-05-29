@@ -11,12 +11,14 @@ static enum gm_result gm_main(int argc, char** argv) {
 
 	struct gm_settings settings = {};
 	struct gm_display display = {};
+	struct gm_ui ui = {};
 
 	struct gm_context context = {
 			.detail = &detail,
 
 			.settings = &settings,
-			.display = &display
+			.display = &display,
+			.ui = &ui
 	};
 
 	result = gm_context_new(&context, argc, argv);

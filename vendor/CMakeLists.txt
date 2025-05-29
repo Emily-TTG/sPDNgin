@@ -7,6 +7,7 @@ set(WANT_DOCS OFF)
 set(WANT_DEMO OFF)
 set(WANT_EXAMPLES OFF)
 set(WANT_TESTS OFF)
+set(WANT_MONOLITH ON)
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/allegro SYSTEM)
 
 add_library(nuklear STATIC)
@@ -17,7 +18,7 @@ target_sources(
 		${CMAKE_CURRENT_LIST_DIR}/nuklear/nuklear.h
 		${CMAKE_CURRENT_LIST_DIR}/nuklear/demo/allegro5/nuklear_allegro5.h)
 
-target_link_libraries(nuklear PRIVATE allegro)
+target_link_libraries(nuklear PRIVATE allegro_monolith ${MATH_LIBRARY})
 
 target_include_directories(
 		nuklear PUBLIC
@@ -31,5 +32,4 @@ target_compile_definitions(
 		NK_INCLUDE_STANDARD_IO=1
 		NK_INCLUDE_STANDARD_VARARGS=1
 		NK_INCLUDE_STANDARD_BOOL=1
-		NK_INCLUDE_FONT_BAKING=1
-		NK_INCLUDE_DEFAULT_FONT=1)
+		NK_INCLUDE_FONT_BAKING=1)

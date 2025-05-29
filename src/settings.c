@@ -9,6 +9,8 @@ enum gm_result gm_settings_load(
 	// Sensible defaults.
 	*settings = (struct gm_settings) {
 			.sync_mode = GM_SYNC_UNSET,
+			.framerate = 60,
+
 #ifdef NDEBUG
 			.display_mode = GM_DISPLAY_WINDOWED_FULLSCREEN,
 #else
