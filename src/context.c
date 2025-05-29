@@ -86,6 +86,7 @@ enum gm_result gm_context_new(
 		return GM_LOG_RESULT(gm_settings_load, result);
 	}
 
+	// TODO: App config for window title etc.
 	result = gm_display_new(context->display, context);
 	if(result) {
 		return GM_LOG_RESULT(gm_settings_load, result);
@@ -171,7 +172,6 @@ enum gm_result gm_context_loop(struct gm_context* context) {
 		}
 
 		if(tick_render) {
-			// TODO: App config for window title etc.
 			if(nk_begin(ui->context, "game", nk_rect(50, 50, 220, 220), NK_WINDOW_BORDER)) {
 				nk_layout_row_static(ui->context, 30, 80, 1);
 				if(nk_button_label(ui->context, "button")) {

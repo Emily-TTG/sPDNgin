@@ -35,9 +35,10 @@ void gm_log(
 
 void gm_log_result(
 		const char* function, const char* file, int line,
-		const char* context, enum gm_result result) {
+		const char* context, const char* path, enum gm_result result) {
 
 	gm_log(
 			function, file, line,
-			"%s: %s", context, gm_result_description(result));
+			"%s(%s): %s",
+			context, path ? path : "", gm_result_description(result));
 }
