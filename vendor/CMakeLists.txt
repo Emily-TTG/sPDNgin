@@ -10,6 +10,9 @@ set(WANT_TESTS OFF)
 set(WANT_MONOLITH ON)
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/allegro SYSTEM)
 
+set(FLECS_SHARED OFF)
+add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/flecs SYSTEM)
+
 add_library(nuklear-interface INTERFACE)
 
 target_sources(

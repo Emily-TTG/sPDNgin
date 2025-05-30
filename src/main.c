@@ -2,6 +2,7 @@
 #include <game/log.h>
 #include <game/context.h>
 #include <game/settings.h>
+#include <game/scene.h>
 #include <game/detail.h>
 
 static enum gm_result gm_main(int argc, char** argv) {
@@ -12,13 +13,15 @@ static enum gm_result gm_main(int argc, char** argv) {
 	struct gm_settings settings = {};
 	struct gm_display display = {};
 	struct gm_ui ui = {};
+	struct gm_scene scene = {};
 
 	struct gm_context context = {
 			.detail = &detail,
 
 			.settings = &settings,
 			.display = &display,
-			.ui = &ui
+			.ui = &ui,
+			.scene = &scene
 	};
 
 	result = gm_context_new(&context, argc, argv);

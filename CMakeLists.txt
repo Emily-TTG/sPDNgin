@@ -28,7 +28,11 @@ target_compile_features(game PRIVATE c_std_23)
 
 cxx_default_diagnostics(game)
 
-target_link_libraries(game PRIVATE allegro_monolith nuklear)
+target_link_libraries(
+		game PRIVATE
+		allegro_monolith
+		nuklear
+		flecs::flecs_static)
 
 target_include_directories(game PRIVATE include)
 target_sources(
@@ -39,6 +43,7 @@ target_sources(
 		${CMAKE_CURRENT_LIST_DIR}/src/display.c
 		${CMAKE_CURRENT_LIST_DIR}/src/settings.c
 		${CMAKE_CURRENT_LIST_DIR}/src/ui.c
+		${CMAKE_CURRENT_LIST_DIR}/src/scene.c
 		${CMAKE_CURRENT_LIST_DIR}/src/context.c
 
 		${CMAKE_CURRENT_LIST_DIR}/include/game/detail.h
@@ -47,6 +52,8 @@ target_sources(
 		${CMAKE_CURRENT_LIST_DIR}/include/game/display.h
 		${CMAKE_CURRENT_LIST_DIR}/include/game/settings.h
 		${CMAKE_CURRENT_LIST_DIR}/include/game/ui.h
+		${CMAKE_CURRENT_LIST_DIR}/include/game/scene.h
+		${CMAKE_CURRENT_LIST_DIR}/include/game/components.h
 		${CMAKE_CURRENT_LIST_DIR}/include/game/context.h)
 
 target_sources(

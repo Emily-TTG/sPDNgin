@@ -4,6 +4,7 @@
 #include <game/settings.h>
 #include <game/display.h>
 #include <game/ui.h>
+#include <game/scene.h>
 
 #include <game/local/local.h>
 
@@ -12,7 +13,6 @@ static enum gm_result gm_context_install_events(struct gm_context* context) {
 
 	ALLEGRO_TIMER* timer = al_create_timer(GM_FIXED_UPDATE_STEP);
 	if(!timer) {
-		gm_context_delete(context);
 		return GM_LOG_RESULT(al_create_timer, GM_RESULT_ERROR);
 	}
 	detail->game_timer = timer;
@@ -20,25 +20,21 @@ static enum gm_result gm_context_install_events(struct gm_context* context) {
 	// TODO: Handle sync rules.
 	timer = al_create_timer(1.0 / (double) context->settings->framerate);
 	if(!timer) {
-		gm_context_delete(context);
 		return GM_LOG_RESULT(al_create_timer, GM_RESULT_ERROR);
 	}
 	detail->render_timer = timer;
 
 	ALLEGRO_EVENT_QUEUE* queue = al_create_event_queue();
 	if(!queue) {
-		gm_context_delete(context);
 		return GM_LOG_RESULT(al_create_timer, GM_RESULT_ERROR);
 	}
 	detail->event_queue = queue;
 
 	if(!al_install_keyboard()) {
-		gm_context_delete(context);
 		return GM_LOG_RESULT(al_install_keyboard, GM_RESULT_ERROR);
 	}
 
 	if(!al_install_mouse()) {
-		gm_context_delete(context);
 		return GM_LOG_RESULT(al_install_mouse, GM_RESULT_ERROR);
 	}
 
@@ -81,27 +77,35 @@ enum gm_result gm_context_new(
 		return GM_LOG_RESULT(al_init, GM_RESULT_ERROR);
 	}
 
-	// TODO: Once/if this needs cleanup add to tail.
-	// TODO: Leaky EH in here.
 	result = gm_settings_load(context->settings, argc, argv);
 	if(result) {
+		gm_context_delete(context);
 		return GM_LOG_RESULT(gm_settings_load, result);
 	}
 
 	// TODO: App config for window title etc.
 	result = gm_display_new(context->display, context);
 	if(result) {
+		gm_context_delete(context);
 		return GM_LOG_RESULT(gm_settings_load, result);
 	}
 
 	result = gm_context_install_events(context);
 	if(result) {
+		gm_context_delete(context);
 		return GM_LOG_RESULT(gm_settings_load, result);
 	}
 
 	result = gm_ui_new(context->ui, context);
 	if(result) {
+		gm_context_delete(context);
 		return GM_LOG_RESULT(gm_ui_new, result);
+	}
+
+	result = gm_scene_new(context->scene, argc, argv);
+	if(result) {
+		gm_context_delete(context);
+		return GM_LOG_RESULT(gm_scene_new, result);
 	}
 
 	return GM_RESULT_OK;
@@ -118,6 +122,7 @@ void gm_context_delete(struct gm_context* context) {
 	al_destroy_timer(detail->render_timer);
 	al_destroy_event_queue(detail->event_queue);
 
+	gm_scene_delete(context->scene);
 	gm_ui_delete(context->ui);
 	gm_display_delete(context->display);
 
@@ -179,7 +184,6 @@ enum gm_result gm_context_loop(struct gm_context* context) {
 			else gm_context_handle_event(context, &event, &exit);
 		} while(al_get_next_event(detail->event_queue, &event));
 		nk_input_end(ui->context);
-
 
 		if(tick_game) {
 			result = gm_local_tick_game(context);
