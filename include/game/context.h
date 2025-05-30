@@ -2,8 +2,6 @@
 
 #include <game/result.h>
 
-#define GM_FIXED_UPDATE_STEP (1.0 / 30.0)
-
 struct gm_context_detail;
 
 struct gm_settings;

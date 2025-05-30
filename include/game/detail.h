@@ -12,8 +12,7 @@
 struct gm_context_detail {
 	ALLEGRO_EVENT_QUEUE* event_queue;
 
-	ALLEGRO_TIMER* game_timer; // Fixed rate game update timer.
-	ALLEGRO_TIMER* render_timer;
+	ALLEGRO_TIMER* timer;
 };
 
 struct gm_display {

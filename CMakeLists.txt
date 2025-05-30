@@ -58,7 +58,6 @@ target_sources(
 
 target_sources(
 		game PRIVATE
-		${CMAKE_CURRENT_LIST_DIR}/src/local/game.c
-		${CMAKE_CURRENT_LIST_DIR}/src/local/render.c
+		${CMAKE_CURRENT_LIST_DIR}/src/local/local.c
 
 		${CMAKE_CURRENT_LIST_DIR}/include/game/local/local.h)

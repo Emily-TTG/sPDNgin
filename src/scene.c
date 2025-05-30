@@ -2,6 +2,9 @@
 #include <game/detail.h>
 #include <game/components.h>
 
+ECS_COMPONENT_DECLARE(gm_component_transform_t);
+ECS_COMPONENT_DECLARE(gm_component_sprite_t);
+
 enum gm_result gm_scene_new(struct gm_scene* scene, int argc, char** argv) {
 	scene->world = ecs_init_w_args(argc, argv);
 
