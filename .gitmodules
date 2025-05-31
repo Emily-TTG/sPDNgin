@@ -15,3 +15,6 @@
 	url = https://github.com/SanderMertens/flecs
 	ignore = dirty
 	shallow = true
+[submodule "vendor/luajit"]
+	path = vendor/luajit
+	url = https://github.com/LuaJIT/LuaJIT

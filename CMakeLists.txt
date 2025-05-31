@@ -16,6 +16,8 @@ set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ${IPO_SUPPORTED})
 
 project(tins)
 
+include(ExternalProject)
+
 find_library(MATH_LIBRARY m)
 
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/utilities.cmake)
@@ -32,7 +34,8 @@ target_link_libraries(
 		game PRIVATE
 		allegro_monolith
 		nuklear
-		flecs::flecs_static)
+		flecs::flecs_static
+		luajit)
 
 target_include_directories(game PRIVATE include)
 target_sources(

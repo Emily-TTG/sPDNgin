@@ -47,3 +47,5 @@ target_link_libraries(nuklear PUBLIC nuklear-interface)
 target_sources(
 		nuklear PRIVATE
 		${CMAKE_CURRENT_LIST_DIR}/helper/nuklear.c)
+
+include(${CMAKE_CURRENT_LIST_DIR}/luajit.cmake)
