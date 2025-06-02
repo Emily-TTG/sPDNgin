@@ -47,6 +47,7 @@ target_sources(
 		${CMAKE_CURRENT_LIST_DIR}/src/settings.c
 		${CMAKE_CURRENT_LIST_DIR}/src/ui.c
 		${CMAKE_CURRENT_LIST_DIR}/src/scene.c
+		${CMAKE_CURRENT_LIST_DIR}/src/script.c
 		${CMAKE_CURRENT_LIST_DIR}/src/context.c
 
 		${CMAKE_CURRENT_LIST_DIR}/include/game/detail.h
@@ -56,6 +57,7 @@ target_sources(
 		${CMAKE_CURRENT_LIST_DIR}/include/game/settings.h
 		${CMAKE_CURRENT_LIST_DIR}/include/game/ui.h
 		${CMAKE_CURRENT_LIST_DIR}/include/game/scene.h
+		${CMAKE_CURRENT_LIST_DIR}/include/game/script.h
 		${CMAKE_CURRENT_LIST_DIR}/include/game/components.h
 		${CMAKE_CURRENT_LIST_DIR}/include/game/context.h)
 

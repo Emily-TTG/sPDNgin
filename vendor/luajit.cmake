@@ -63,6 +63,7 @@ if(${CMAKE_GENERATOR} MATCHES "Unix Makefiles")
 	set(LUAJIT_MAKE_PROGRAM ${CMAKE_MAKE_PROGRAM})
 elseif(NOT LUAJIT_MAKE_PROGRAM)
 	if(MINGW)
+		# TODO: This doesn't work in a cross context.
 		set(LUAJIT_MAKE_PROGRAM mingw32-make)
 	else()
 		set(LUAJIT_MAKE_PROGRAM make)

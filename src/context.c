@@ -5,6 +5,7 @@
 #include <game/display.h>
 #include <game/ui.h>
 #include <game/scene.h>
+#include <game/script.h>
 
 #include <game/local/local.h>
 
@@ -103,6 +104,12 @@ enum gm_result gm_context_new(
 		return GM_LOG_RESULT(gm_scene_new, result);
 	}
 
+	result = gm_script_engine_new(context->engine);
+	if(result) {
+		gm_context_delete(context);
+		return GM_LOG_RESULT(gm_scene_new, result);
+	}
+
 	return GM_RESULT_OK;
 }
 
@@ -116,6 +123,7 @@ void gm_context_delete(struct gm_context* context) {
 	al_destroy_timer(detail->timer);
 	al_destroy_event_queue(detail->event_queue);
 
+	gm_script_engine_delete(context->engine);
 	gm_scene_delete(context->scene);
 	gm_ui_delete(context->ui);
 	gm_display_delete(context->display);
