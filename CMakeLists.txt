@@ -19,6 +19,9 @@ project(tins)
 include(ExternalProject)
 
 find_library(MATH_LIBRARY m)
+if(NOT ${MATH_LIBRARY})
+	set(MATH_LIBRARY "")
+endif()
 
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/utilities.cmake)
 
@@ -29,13 +32,6 @@ add_executable(game WIN32)
 target_compile_features(game PRIVATE c_std_23)
 
 cxx_default_diagnostics(game)
-
-target_link_libraries(
-		game PRIVATE
-		allegro_monolith
-		nuklear
-		flecs::flecs_static
-		luajit)
 
 target_include_directories(game PRIVATE include)
 target_sources(
@@ -66,3 +62,12 @@ target_sources(
 		${CMAKE_CURRENT_LIST_DIR}/src/local/local.c
 
 		${CMAKE_CURRENT_LIST_DIR}/include/game/local/local.h)
+
+target_link_libraries(
+		game PRIVATE
+		stb_image
+		allegro_broken_includes
+		allegro_monolith
+		nuklear
+		flecs::flecs_static
+		luajit-lib)

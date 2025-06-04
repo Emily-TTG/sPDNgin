@@ -6,8 +6,6 @@ enum gm_result gm_script_engine_new(struct gm_script_engine* engine) {
 
 	luaL_openlibs(engine->state);
 
-	al_fgets()
-
 	return GM_RESULT_OK;
 }
 

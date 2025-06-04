@@ -15,24 +15,11 @@ if(NOT LUAJIT_SHARED)
 endif()
 
 if(${LUAJIT_STATIC} AND ${LUAJIT_SHARED})
-	set(LUAJIT_BUILD_MODE "mixed")
+	set(LUAJIT_BUILD_MODE mixed)
 elseif(${LUAJIT_STATIC})
-	set(LUAJIT_BUILD_MODE "static")
+	set(LUAJIT_BUILD_MODE static)
 elseif(${LUAJIT_SHARED})
-	set(LUAJIT_BUILD_MODE "dynamic")
-endif()
-
-# TODO: As `MINGW` has no equivalent generator expression this needs to be
-#       Configure-time determined.
-#set(LUAJIT_CYGWIN_MSYS $<$<PLATFORM_ID:CYGWIN>,cygwin> $<$<PLATFORM_ID:MSYS>:mingw>)
-if(CYGWIN)
-	set(LUAJIT_HOST_MSYS "cygwin")
-elseif(MSYS)
-	set(LUAJIT_HOST_MSYS "mingw")
-elseif(MINGW)
-	set(LUAJIT_HOST_MSYS "mingw")
-else()
-	set(LUAJIT_HOST_MSYS)
+	set(LUAJIT_BUILD_MODE dynamic)
 endif()
 
 set(
@@ -46,16 +33,16 @@ set(LUAJIT_INSTALL_DIR_OPTION PREFIX=${LUAJIT_INSTALL_DIR})
 
 set(
 		LUAJIT_MAKE_ARGUMENTS
+
 		BUILDMODE=${LUAJIT_BUILD_MODE}
 		CCDEBUG=$<$<CONFIG:Debug>:${CMAKE_C_FLAGS_DEBUG}>
 		CCOPT=$<$<CONFIG:Release>:${CMAKE_C_FLAGS_RELEASE}>
 
 		HOST_SYS=$<$<PLATFORM_ID:Windows>:Windows>
-		HOST_MSYS=${LUAJIT_HOST_MSYS}
 
 		CC=${CMAKE_C_COMPILER}
-		CFLAGS=${CMAKE_C_FLAGS}
-		LDFLAGS=${LUAJIT_LDFLAGS}
+		#CFLAGS=${CMAKE_C_FLAGS}
+		#LDFLAGS=${LUAJIT_LDFLAGS}
 
 		${LUAJIT_INSTALL_DIR_OPTION})
 
@@ -70,20 +57,21 @@ elseif(NOT LUAJIT_MAKE_PROGRAM)
 	endif()
 endif()
 
+set(LUAJIT_MAKE_DIR ${LUAJIT_SOURCE_DIR}/$<$<PLATFORM_ID:Windows>:src>)
+
 ExternalProject_Add(
 		luajit-build
 
 		SOURCE_DIR ${LUAJIT_SOURCE_DIR}
-		BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}
-		INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR}
 
 		CONFIGURE_COMMAND ""
-		BUILD_COMMAND
-			${LUAJIT_MAKE_PROGRAM} -C ${LUAJIT_SOURCE_DIR} ${LUAJIT_MAKE_ARGUMENTS}
-		INSTALL_COMMAND
-			${LUAJIT_MAKE_PROGRAM} -C ${LUAJIT_SOURCE_DIR} install ${LUAJIT_INSTALL_DIR_OPTION})
+		BUILD_COMMAND ${CMAKE_COMMAND} -E env ${LUAJIT_MAKE_PROGRAM} -C ${LUAJIT_MAKE_DIR} ${LUAJIT_MAKE_ARGUMENTS}
+		INSTALL_COMMAND "")
 
-add_library(luajit INTERFACE)
+add_library(luajit-lib INTERFACE)
+add_dependencies(luajit-lib luajit-build)
 
-target_link_libraries(luajit INTERFACE luajit-5.1)
-target_include_directories(luajit INTERFACE ${LUAJIT_INSTALL_DIR}/include)
+target_include_directories(luajit-lib INTERFACE ${LUAJIT_SOURCE_DIR}/src)
+
+target_link_directories(luajit-lib INTERFACE ${LUAJIT_SOURCE_DIR}/src)
+target_link_libraries(luajit-lib INTERFACE luajit)

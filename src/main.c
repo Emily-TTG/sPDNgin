@@ -4,6 +4,7 @@
 #include <game/settings.h>
 #include <game/scene.h>
 #include <game/detail.h>
+#include <game/script.h>
 
 static enum gm_result gm_main(int argc, char** argv) {
 	enum gm_result result;
