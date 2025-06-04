@@ -94,7 +94,7 @@ static ALLEGRO_BITMAP* gm_al_load_stbi_png(const char* path, int flags) {
 			}
 			else {
 				stbi_image_free(data);
-				GM_LOG("Cannot convert image: channels != 3/4");
+				GM_LOG("Cannot convert image %s: channels != 3/4", path);
 				return 0;
 			}
 
@@ -153,12 +153,6 @@ enum gm_result gm_context_new(
 		return GM_LOG_RESULT(gm_scene_new, result);
 	}
 
-	result = gm_script_engine_new(context->engine);
-	if(result) {
-		gm_context_delete(context);
-		return GM_LOG_RESULT(gm_scene_new, result);
-	}
-
 	return GM_RESULT_OK;
 }
 
@@ -172,7 +166,6 @@ void gm_context_delete(struct gm_context* context) {
 	al_destroy_timer(detail->timer);
 	al_destroy_event_queue(detail->event_queue);
 
-	gm_script_engine_delete(context->engine);
 	gm_scene_delete(context->scene);
 	gm_ui_delete(context->ui);
 	gm_display_delete(context->display);

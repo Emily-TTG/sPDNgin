@@ -6,6 +6,7 @@ const char* gm_result_description(enum gm_result result) {
 		case GM_RESULT_OK: return "no error";
 		case GM_RESULT_ERROR: return "unknown error";
 		case GM_RESULT_EOF: return "end of file";
+		case GM_RESULT_BAD_TYPE: return "bad type";
 	}
 
 	return "unknown";

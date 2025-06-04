@@ -8,7 +8,6 @@ struct gm_settings;
 struct gm_display;
 struct gm_ui;
 struct gm_scene;
-struct gm_script_engine;
 
 struct ecs_world_t;
 
@@ -19,7 +18,6 @@ struct gm_context {
 	struct gm_display* display;
 	struct gm_ui* ui;
 	struct gm_scene* scene;
-	struct gm_script_engine* engine;
 };
 
 enum gm_result gm_context_new(struct gm_context*, int, char**);

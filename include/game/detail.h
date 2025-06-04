@@ -35,6 +35,18 @@ struct gm_scene {
 	struct ecs_world_t* world;
 };
 
-struct gm_script_engine {
+struct gm_script {
 	lua_State* state;
+};
+
+struct gm_tileset {
+	int dimension;
+	ALLEGRO_BITMAP* atlas;
+};
+
+struct gm_tilemap {
+	struct gm_tileset tileset;
+
+	int width;
+	int* data;
 };

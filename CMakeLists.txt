@@ -27,9 +27,12 @@ include(${CMAKE_CURRENT_LIST_DIR}/cmake/utilities.cmake)
 
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/vendor)
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/tool)
+add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/res)
 
 add_executable(game WIN32)
 target_compile_features(game PRIVATE c_std_23)
+
+add_dependencies(game assets)
 
 cxx_default_diagnostics(game)
 
@@ -44,6 +47,7 @@ target_sources(
 		${CMAKE_CURRENT_LIST_DIR}/src/ui.c
 		${CMAKE_CURRENT_LIST_DIR}/src/scene.c
 		${CMAKE_CURRENT_LIST_DIR}/src/script.c
+		${CMAKE_CURRENT_LIST_DIR}/src/tilemap.c
 		${CMAKE_CURRENT_LIST_DIR}/src/context.c
 
 		${CMAKE_CURRENT_LIST_DIR}/include/game/detail.h
@@ -55,6 +59,7 @@ target_sources(
 		${CMAKE_CURRENT_LIST_DIR}/include/game/scene.h
 		${CMAKE_CURRENT_LIST_DIR}/include/game/script.h
 		${CMAKE_CURRENT_LIST_DIR}/include/game/components.h
+		${CMAKE_CURRENT_LIST_DIR}/include/game/tilemap.h
 		${CMAKE_CURRENT_LIST_DIR}/include/game/context.h)
 
 target_sources(

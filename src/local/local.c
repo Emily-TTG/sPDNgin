@@ -4,6 +4,8 @@
 #include <game/detail.h>
 #include <game/log.h>
 #include <game/components.h>
+#include <game/script.h>
+#include <game/tilemap.h>
 
 ECS_SYSTEM_DECLARE(gm_local_render_sprite);
 static void gm_local_render_sprite(ecs_iter_t* it) {
@@ -29,6 +31,14 @@ enum gm_result gm_local_start(struct gm_context* context) {
 	ecs_set(world, test, gm_component_transform_t, { 50.0f, 50.0f });
 	const char* path = "res/img/arse.png";
 	ecs_set(world, test, gm_component_sprite_t, { al_load_bitmap(path) });
+
+	struct gm_tileset tileset;
+	gm_script_file_table(
+			"res/tile/goop.lua", gm_tileset_script_table_handler, &tileset);
+
+	struct gm_tilemap tilemap;
+	gm_script_file_table(
+			"res/map/test.lua", gm_tilemap_script_table_handler, &tilemap);
 
 	return GM_RESULT_OK;
 }
