@@ -11,7 +11,7 @@ function(tiled_generate _INPUT _OUTPUT _FORMAT _TYPE _LIST)
 	set(${_LIST} ${${_LIST}} ${_LOCAL_OUTPUT} PARENT_SCOPE)
 endfunction()
 
-tiled_generate(map/src/test.tmx map/test.lua lua map ASSET_TARGETS)
+tiled_generate(map/src/map.tmx map/map.lua lua map ASSET_TARGETS)
 tiled_generate(tile/src/goop.tsx tile/goop.lua lua tileset ASSET_TARGETS)
 
 add_custom_target(assets DEPENDS ${ASSET_TARGETS})

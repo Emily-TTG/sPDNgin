@@ -15,5 +15,10 @@ typedef struct gm_component_sprite {
 	ALLEGRO_BITMAP* bitmap;
 } gm_component_sprite_t;
 
+typedef struct gm_component_tilemap {
+	struct gm_tilemap tilemap;
+} gm_component_tilemap_t;
+
 extern ECS_COMPONENT_DECLARE(gm_component_transform_t);
 extern ECS_COMPONENT_DECLARE(gm_component_sprite_t);
+extern ECS_COMPONENT_DECLARE(gm_component_tilemap_t);

@@ -40,13 +40,15 @@ struct gm_script {
 };
 
 struct gm_tileset {
-	int dimension;
 	ALLEGRO_BITMAP* atlas;
+
+	int dimension;
+	int width, height;
 };
 
 struct gm_tilemap {
 	struct gm_tileset tileset;
 
-	int width;
+	int width, height;
 	int* data;
 };

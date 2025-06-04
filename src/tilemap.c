@@ -41,6 +41,11 @@ enum gm_result gm_tileset_script_table_handler(
 	free(image);
 
 	out->dimension = gm_script_table_get_int(script, -1, "tilewidth");
+	out->width =
+			gm_script_table_get_int(script, -1, "imagewidth") / out->dimension;
+
+	out->height =
+			gm_script_table_get_int(script, -1, "imageheight") / out->dimension;
 
 	return GM_RESULT_OK;
 }
@@ -55,6 +60,7 @@ enum gm_result gm_tilemap_script_table_handler(
 	char* tileset;
 
 	out->width = gm_script_table_get_int(script, -1, "width");
+	out->height = gm_script_table_get_int(script, -1, "height");
 
 	lua_getfield(script->state, -1, "layers");
 	{
@@ -62,34 +68,15 @@ enum gm_result gm_tilemap_script_table_handler(
 		{
 			lua_getfield(script->state, -1, "data");
 			{
-				size_t length = lua_strlen(script->state, -1);
-				const char* data = lua_tostring(script->state, -1);
+				int length = out->width * out->height;
 				out->data = malloc(length * sizeof(int));
 
-				for(size_t i = 0; i < length; ++i) {
-					char c = data[i];
-					int id;
-
-					if(isupper(c)) {
-						id = c - 'A';
+				for(int i = 0; i < length; ++i) {
+					lua_rawgeti(script->state, -1, i + 1);
+					{
+						out->data[i] = (int) lua_tointeger(script->state, -1);
 					}
-					else if(islower(c)) {
-						id = (c - 'a') + 26;
-					}
-					else if(isdigit(c)) {
-						id = (c - '0') + 52;
-					}
-					else if(c == '+') {
-						id = 62;
-					}
-					else if(c == '/') {
-						id = 63;
-					}
-					else {
-						id = 0;
-					}
-
-					out->data[i] = id;
+					lua_pop(script->state, 1);
 				}
 			}
 			lua_pop(script->state, 1);
