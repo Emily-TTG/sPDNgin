@@ -84,7 +84,7 @@ static ALLEGRO_BITMAP* gm_al_load_stbi_png(const char* path, int flags) {
 	for(int y = 0; y < height; ++y) {
 		for(int x = 0; x < width; ++x) {
 			ALLEGRO_COLOR color;
-			stbi_uc* base = &data[x + y * width];
+			stbi_uc* base = &data[(x + y * width) * channels];
 
 			if(channels == 3) {
 				 color = al_map_rgb(base[0], base[1], base[2]);
@@ -93,6 +93,7 @@ static ALLEGRO_BITMAP* gm_al_load_stbi_png(const char* path, int flags) {
 				color = al_map_rgba(base[0], base[1], base[2], base[3]);
 			}
 			else {
+				stbi_image_free(data);
 				GM_LOG("Cannot convert image: channels != 3/4");
 				return 0;
 			}
@@ -100,14 +101,9 @@ static ALLEGRO_BITMAP* gm_al_load_stbi_png(const char* path, int flags) {
 			al_draw_pixel((float) x, (float) y, color);
 		}
 	}
+	stbi_image_free(data);
 
 	return bitmap;
-}
-
-static enum gm_result gm_set_png_handler() {
-	al_register_bitmap_loader(".png", gm_al_load_stbi_png);
-
-	return GM_RESULT_OK;
 }
 
 enum gm_result gm_context_new(
@@ -121,10 +117,9 @@ enum gm_result gm_context_new(
 		return GM_LOG_RESULT(al_init, GM_RESULT_ERROR);
 	}
 
-	result = gm_set_png_handler();
-	if(result) {
-		gm_context_delete(context);
-		return GM_LOG_RESULT(gm_set_png_handler, result);
+	bool set = al_register_bitmap_loader(".png", gm_al_load_stbi_png);
+	if(!set) {
+		(void) GM_LOG_RESULT(al_register_bitmap_loader, GM_RESULT_ERROR);
 	}
 
 	result = gm_settings_load(context->settings, argc, argv);

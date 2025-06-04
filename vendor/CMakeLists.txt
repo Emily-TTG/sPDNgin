@@ -8,6 +8,7 @@ set(WANT_DEMO OFF)
 set(WANT_EXAMPLES OFF)
 set(WANT_TESTS OFF)
 set(WANT_MONOLITH ON)
+set(WANT_IMAGE_PNG OFF) # We just want to always use our stbi adapter.
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/allegro SYSTEM)
 
 # Windows+Submodule needs some fanagling.
