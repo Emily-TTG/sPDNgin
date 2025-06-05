@@ -30,13 +30,13 @@ add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/tool)
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/res)
 
 add_library(pdn STATIC)
-target_compile_features(pdn PRIVATE c_std_23)
+target_compile_features(pdn PUBLIC c_std_23)
 
 add_dependencies(pdn assets)
 
 cxx_default_diagnostics(pdn)
 
-target_include_directories(pdn PRIVATE include)
+target_include_directories(pdn PUBLIC include)
 target_sources(
 		pdn PRIVATE
 		${CMAKE_CURRENT_LIST_DIR}/src/result.c
@@ -63,14 +63,8 @@ target_sources(
 
 		${CMAKE_CURRENT_LIST_DIR}/include/pdn/local.h)
 
-target_sources(
-		pdn PRIVATE
-		${CMAKE_CURRENT_LIST_DIR}/src/local/local.c
-
-		)
-
 target_link_libraries(
-		pdn PRIVATE
+		pdn PUBLIC
 		stb_image
 		allegro_broken_includes
 		allegro_monolith
