@@ -49,6 +49,6 @@ struct pdn_tileset {
 struct pdn_tilemap {
 	struct pdn_tileset tileset;
 
-	int width, height;
-	int* data;
+	int width, height, layers;
+	int** data;
 };

@@ -61,27 +61,33 @@ enum pdn_result pdn_tilemap_script_table_handler(
 
 	out->width = pdn_script_table_get_int(script, -1, "width");
 	out->height = pdn_script_table_get_int(script, -1, "height");
+	int length = out->width * out->height;
 
 	lua_getfield(script->state, -1, "layers");
 	{
-		lua_rawgeti(script->state, -1, 1);
-		{
-			lua_getfield(script->state, -1, "data");
-			{
-				int length = out->width * out->height;
-				out->data = malloc(length * sizeof(int));
+		out->layers = (int) lua_objlen(script->state, -1);
+		out->data = malloc(out->layers * sizeof(int*));
 
-				for(int i = 0; i < length; ++i) {
-					lua_rawgeti(script->state, -1, i + 1);
-					{
-						out->data[i] = (int) lua_tointeger(script->state, -1);
+		for(int i = 0; i < out->layers; ++i) {
+			lua_rawgeti(script->state, -1, i + 1);
+			{
+				lua_getfield(script->state, -1, "data");
+				{
+					out->data[i] = malloc(length * sizeof(int));
+
+					for(int j = 0; j < length; ++j) {
+						lua_rawgeti(script->state, -1, j + 1);
+						{
+							out->data[i][j] =
+									(int) lua_tointeger(script->state, -1);
+						}
+						lua_pop(script->state, 1);
 					}
-					lua_pop(script->state, 1);
 				}
+				lua_pop(script->state, 1);
 			}
 			lua_pop(script->state, 1);
 		}
-		lua_pop(script->state, 1);
 	}
 	lua_pop(script->state, 1);
 
