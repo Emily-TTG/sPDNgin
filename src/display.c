@@ -1,11 +1,11 @@
-#include <game/display.h>
-#include <game/context.h>
-#include <game/detail.h>
-#include <game/settings.h>
-#include <game/log.h>
+#include <pdn/display.h>
+#include <pdn/context.h>
+#include <pdn/detail.h>
+#include <pdn/settings.h>
+#include <pdn/log.h>
 
-enum gm_result gm_display_new(
-		struct gm_display* display, struct gm_context* context) {
+enum pdn_result pdn_display_new(
+		struct pdn_display* display, struct pdn_context* context) {
 
 	auto settings = context->settings;
 
@@ -13,14 +13,14 @@ enum gm_result gm_display_new(
 			(int) settings->width, (int) settings->height);
 
 	if(!handle) {
-		return GM_LOG_RESULT(al_create_display, GM_RESULT_ERROR);
+		return PDN_LOG_RESULT(al_create_display, PDN_RESULT_ERROR);
 	}
 
 	display->display = handle;
 
-	return GM_RESULT_OK;
+	return PDN_RESULT_OK;
 }
 
-void gm_display_delete(struct gm_display* display) {
+void pdn_display_delete(struct pdn_display* display) {
 	al_destroy_display(display->display);
 }

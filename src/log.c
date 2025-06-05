@@ -1,4 +1,4 @@
-#include <game/log.h>
+#include <pdn/log.h>
 
 #include <stdio.h>
 
@@ -6,7 +6,7 @@
 # include <Windows.h>
 #endif
 
-void gm_log_variadic(
+void pdn_log_variadic(
 		const char* function, const char* file, int line,
 		const char* format, va_list list) {
 
@@ -49,22 +49,22 @@ void gm_log_variadic(
 #endif
 }
 
-void gm_log(
+void pdn_log(
 		const char* function, const char* file, int line,
 		const char* format, ...) {
 
 	va_list list;
 	va_start(list, format);
-	gm_log_variadic(function, file, line, format, list);
+	pdn_log_variadic(function, file, line, format, list);
 	va_end(list);
 }
 
-void gm_log_result(
+void pdn_log_result(
 		const char* function, const char* file, int line,
-		const char* context, const char* path, enum gm_result result) {
+		const char* context, const char* path, enum pdn_result result) {
 
-	gm_log(
+	pdn_log(
 			function, file, line,
 			"%s(%s): %s",
-			context, path ? path : "", gm_result_description(result));
+			context, path ? path : "", pdn_result_description(result));
 }

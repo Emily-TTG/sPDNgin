@@ -29,17 +29,16 @@ add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/vendor)
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/tool)
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/res)
 
-add_executable(game WIN32)
-target_compile_features(game PRIVATE c_std_23)
+add_library(pdn STATIC)
+target_compile_features(pdn PRIVATE c_std_23)
 
-add_dependencies(game assets)
+add_dependencies(pdn assets)
 
-cxx_default_diagnostics(game)
+cxx_default_diagnostics(pdn)
 
-target_include_directories(game PRIVATE include)
+target_include_directories(pdn PRIVATE include)
 target_sources(
-		game PRIVATE
-		${CMAKE_CURRENT_LIST_DIR}/src/main.c
+		pdn PRIVATE
 		${CMAKE_CURRENT_LIST_DIR}/src/result.c
 		${CMAKE_CURRENT_LIST_DIR}/src/log.c
 		${CMAKE_CURRENT_LIST_DIR}/src/display.c
@@ -50,26 +49,28 @@ target_sources(
 		${CMAKE_CURRENT_LIST_DIR}/src/tilemap.c
 		${CMAKE_CURRENT_LIST_DIR}/src/context.c
 
-		${CMAKE_CURRENT_LIST_DIR}/include/game/detail.h
-		${CMAKE_CURRENT_LIST_DIR}/include/game/result.h
-		${CMAKE_CURRENT_LIST_DIR}/include/game/log.h
-		${CMAKE_CURRENT_LIST_DIR}/include/game/display.h
-		${CMAKE_CURRENT_LIST_DIR}/include/game/settings.h
-		${CMAKE_CURRENT_LIST_DIR}/include/game/ui.h
-		${CMAKE_CURRENT_LIST_DIR}/include/game/scene.h
-		${CMAKE_CURRENT_LIST_DIR}/include/game/script.h
-		${CMAKE_CURRENT_LIST_DIR}/include/game/components.h
-		${CMAKE_CURRENT_LIST_DIR}/include/game/tilemap.h
-		${CMAKE_CURRENT_LIST_DIR}/include/game/context.h)
+		${CMAKE_CURRENT_LIST_DIR}/include/pdn/detail.h
+		${CMAKE_CURRENT_LIST_DIR}/include/pdn/result.h
+		${CMAKE_CURRENT_LIST_DIR}/include/pdn/log.h
+		${CMAKE_CURRENT_LIST_DIR}/include/pdn/display.h
+		${CMAKE_CURRENT_LIST_DIR}/include/pdn/settings.h
+		${CMAKE_CURRENT_LIST_DIR}/include/pdn/ui.h
+		${CMAKE_CURRENT_LIST_DIR}/include/pdn/scene.h
+		${CMAKE_CURRENT_LIST_DIR}/include/pdn/script.h
+		${CMAKE_CURRENT_LIST_DIR}/include/pdn/components.h
+		${CMAKE_CURRENT_LIST_DIR}/include/pdn/tilemap.h
+		${CMAKE_CURRENT_LIST_DIR}/include/pdn/context.h
+
+		${CMAKE_CURRENT_LIST_DIR}/include/pdn/local.h)
 
 target_sources(
-		game PRIVATE
+		pdn PRIVATE
 		${CMAKE_CURRENT_LIST_DIR}/src/local/local.c
 
-		${CMAKE_CURRENT_LIST_DIR}/include/game/local/local.h)
+		)
 
 target_link_libraries(
-		game PRIVATE
+		pdn PRIVATE
 		stb_image
 		allegro_broken_includes
 		allegro_monolith

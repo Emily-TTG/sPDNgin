@@ -1,7 +1,7 @@
-#include <game/tilemap.h>
-#include <game/detail.h>
-#include <game/script.h>
-#include <game/log.h>
+#include <pdn/tilemap.h>
+#include <pdn/detail.h>
+#include <pdn/script.h>
+#include <pdn/log.h>
 
 #include <ctype.h>
 
@@ -9,10 +9,10 @@
 //		 For every tilemap. In future should decouple these with a loaded
 //		 Tileset registry with refcounts, hashing etc.
 
-enum gm_result gm_tileset_script_table_handler(
-		struct gm_script* script, const char* path, void* pass) {
+enum pdn_result pdn_tileset_script_table_handler(
+		struct pdn_script* script, const char* path, void* pass) {
 
-	struct gm_tileset* out = pass;
+	struct pdn_tileset* out = pass;
 
 	size_t in_length = (strrchr(path, '/') + 1) - path;
 
@@ -31,8 +31,8 @@ enum gm_result gm_tileset_script_table_handler(
 
 	out->atlas = al_load_bitmap(image);
 	if(!out->atlas) {
-		enum gm_result result = GM_LOG_RESULT_PATH(
-				al_load_bitmap, image, GM_RESULT_ERROR);
+		enum pdn_result result = PDN_LOG_RESULT_PATH(
+				al_load_bitmap, image, PDN_RESULT_ERROR);
 
 		free(image);
 		return result;
@@ -40,27 +40,27 @@ enum gm_result gm_tileset_script_table_handler(
 
 	free(image);
 
-	out->dimension = gm_script_table_get_int(script, -1, "tilewidth");
+	out->dimension = pdn_script_table_get_int(script, -1, "tilewidth");
 	out->width =
-			gm_script_table_get_int(script, -1, "imagewidth") / out->dimension;
+			pdn_script_table_get_int(script, -1, "imagewidth") / out->dimension;
 
 	out->height =
-			gm_script_table_get_int(script, -1, "imageheight") / out->dimension;
+			pdn_script_table_get_int(script, -1, "imageheight") / out->dimension;
 
-	return GM_RESULT_OK;
+	return PDN_RESULT_OK;
 }
 
-enum gm_result gm_tilemap_script_table_handler(
-		struct gm_script* script, const char* path, void* pass) {
+enum pdn_result pdn_tilemap_script_table_handler(
+		struct pdn_script* script, const char* path, void* pass) {
 
-	enum gm_result result;
+	enum pdn_result result;
 
-	struct gm_tilemap* out = pass;
+	struct pdn_tilemap* out = pass;
 
 	char* tileset;
 
-	out->width = gm_script_table_get_int(script, -1, "width");
-	out->height = gm_script_table_get_int(script, -1, "height");
+	out->width = pdn_script_table_get_int(script, -1, "width");
+	out->height = pdn_script_table_get_int(script, -1, "height");
 
 	lua_getfield(script->state, -1, "layers");
 	{
@@ -124,12 +124,12 @@ enum gm_result gm_tilemap_script_table_handler(
 	}
 	lua_pop(script->state, 1);
 
-	result = gm_script_file_table(
-			tileset, gm_tileset_script_table_handler, &out->tileset);
+	result = pdn_script_file_table(
+			tileset, pdn_tileset_script_table_handler, &out->tileset);
 
 	if(result) {
-		(void) GM_LOG_RESULT_PATH(
-				gm_script_file_table(gm_tileset_script_table_handler), tileset,
+		(void) PDN_LOG_RESULT_PATH(
+				pdn_script_file_table(pdn_tileset_script_table_handler), tileset,
 				result);
 
 		free(out->data);
@@ -139,5 +139,5 @@ enum gm_result gm_tilemap_script_table_handler(
 
 	free(tileset);
 
-	return GM_RESULT_OK;
+	return PDN_RESULT_OK;
 }

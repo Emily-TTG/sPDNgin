@@ -15,39 +15,39 @@
 
 #include <stb_image.h>
 
-struct gm_context_detail {
+struct pdn_context_detail {
 	ALLEGRO_EVENT_QUEUE* event_queue;
 
 	ALLEGRO_TIMER* timer;
 };
 
-struct gm_display {
+struct pdn_display {
 	ALLEGRO_DISPLAY* display;
 };
 
-struct gm_ui {
+struct pdn_ui {
 	NkAllegro5Font* font;
 
 	struct nk_context* context;
 };
 
-struct gm_scene {
+struct pdn_scene {
 	struct ecs_world_t* world;
 };
 
-struct gm_script {
+struct pdn_script {
 	lua_State* state;
 };
 
-struct gm_tileset {
+struct pdn_tileset {
 	ALLEGRO_BITMAP* atlas;
 
 	int dimension;
 	int width, height;
 };
 
-struct gm_tilemap {
-	struct gm_tileset tileset;
+struct pdn_tilemap {
+	struct pdn_tileset tileset;
 
 	int width, height;
 	int* data;

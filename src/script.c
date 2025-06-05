@@ -1,9 +1,9 @@
-#include <game/script.h>
-#include <game/detail.h>
-#include <game/log.h>
+#include <pdn/script.h>
+#include <pdn/detail.h>
+#include <pdn/log.h>
 
-enum gm_result gm_script_new(
-		struct gm_script* script, const char* path, bool do_libs) {
+enum pdn_result pdn_script_new(
+		struct pdn_script* script, const char* path, bool do_libs) {
 
 	script->state = luaL_newstate();
 
@@ -13,23 +13,23 @@ enum gm_result gm_script_new(
 
 	int error = luaL_dofile(script->state, path);
 	if(error) {
-		GM_LOG("%s: %s", path, lua_tostring(script->state, -1));
+		PDN_LOG("%s: %s", path, lua_tostring(script->state, -1));
 		lua_pop(script->state, 1);
 
-		gm_script_delete(script);
+		pdn_script_delete(script);
 
-		return GM_LOG_RESULT_PATH(luaL_dofile, path, GM_RESULT_ERROR);
+		return PDN_LOG_RESULT_PATH(luaL_dofile, path, PDN_RESULT_ERROR);
 	}
 
-	return GM_RESULT_OK;
+	return PDN_RESULT_OK;
 }
 
-void gm_script_delete(struct gm_script* script) {
+void pdn_script_delete(struct pdn_script* script) {
 	lua_close(script->state);
 }
 
-int gm_script_table_get_int(
-		struct gm_script* script, int index, const char* key) {
+int pdn_script_table_get_int(
+		struct pdn_script* script, int index, const char* key) {
 
 	int result;
 
@@ -42,8 +42,8 @@ int gm_script_table_get_int(
 	return result;
 }
 
-char* gm_script_table_get_string(
-		struct gm_script* script, int index, const char* key) {
+char* pdn_script_table_get_string(
+		struct pdn_script* script, int index, const char* key) {
 
 	lua_getfield(script->state, index, key);
 
@@ -54,30 +54,30 @@ char* gm_script_table_get_string(
 	return result;
 }
 
-enum gm_result gm_script_file_table(
-		const char* path, gm_script_table_handler_t* handler, void* pass) {
+enum pdn_result pdn_script_file_table(
+		const char* path, pdn_script_table_handler_t* handler, void* pass) {
 
-	enum gm_result result;
+	enum pdn_result result;
 
-	struct gm_script script;
+	struct pdn_script script;
 
-	result = gm_script_new(&script, path, false);
+	result = pdn_script_new(&script, path, false);
 	if(result) {
-		return GM_LOG_RESULT_PATH(gm_script_new, path, result);
+		return PDN_LOG_RESULT_PATH(pdn_script_new, path, result);
 	}
 
 	if(!lua_istable(script.state, -1)) {
-		gm_script_delete(&script);
-		return GM_LOG_RESULT_PATH(lua_istable, path, GM_RESULT_BAD_TYPE);
+		pdn_script_delete(&script);
+		return PDN_LOG_RESULT_PATH(lua_istable, path, PDN_RESULT_BAD_TYPE);
 	}
 
 	result = handler(&script, path, pass);
 	if(result) {
-		gm_script_delete(&script);
-		return GM_LOG_RESULT_PATH(gm_script_table_handler_t, path, result);
+		pdn_script_delete(&script);
+		return PDN_LOG_RESULT_PATH(pdn_script_table_handler_t, path, result);
 	}
 
-	gm_script_delete(&script);
+	pdn_script_delete(&script);
 
-	return GM_RESULT_OK;
+	return PDN_RESULT_OK;
 }
