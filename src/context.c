@@ -7,7 +7,7 @@
 #include <pdn/scene.h>
 #include <pdn/script.h>
 
-#include <pdn/local/local.h>
+#include <pdn/local.h>
 
 static enum pdn_result pdn_context_install_events(struct pdn_context* context) {
 	auto detail = context->detail;

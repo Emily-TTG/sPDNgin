@@ -36,7 +36,7 @@ add_dependencies(pdn assets)
 
 cxx_default_diagnostics(pdn)
 
-target_include_directories(pdn PUBLIC include)
+target_include_directories(pdn PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include)
 target_sources(
 		pdn PRIVATE
 		${CMAKE_CURRENT_LIST_DIR}/src/result.c
@@ -47,8 +47,10 @@ target_sources(
 		${CMAKE_CURRENT_LIST_DIR}/src/scene.c
 		${CMAKE_CURRENT_LIST_DIR}/src/script.c
 		${CMAKE_CURRENT_LIST_DIR}/src/tilemap.c
-		${CMAKE_CURRENT_LIST_DIR}/src/context.c
+		${CMAKE_CURRENT_LIST_DIR}/src/context.c)
 
+target_sources(
+		pdn PUBLIC
 		${CMAKE_CURRENT_LIST_DIR}/include/pdn/detail.h
 		${CMAKE_CURRENT_LIST_DIR}/include/pdn/result.h
 		${CMAKE_CURRENT_LIST_DIR}/include/pdn/log.h
@@ -60,7 +62,6 @@ target_sources(
 		${CMAKE_CURRENT_LIST_DIR}/include/pdn/components.h
 		${CMAKE_CURRENT_LIST_DIR}/include/pdn/tilemap.h
 		${CMAKE_CURRENT_LIST_DIR}/include/pdn/context.h
-
 		${CMAKE_CURRENT_LIST_DIR}/include/pdn/local.h)
 
 target_link_libraries(
