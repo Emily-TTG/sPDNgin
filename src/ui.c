@@ -40,7 +40,10 @@ static enum pdn_result pdn_ui_load_style(struct pdn_ui* ui, const char* path) {
 	return PDN_RESULT_OK;
 }
 
-enum pdn_result pdn_ui_new(struct pdn_ui* ui, struct pdn_context* context) {
+enum pdn_result pdn_ui_new(
+		struct pdn_ui* ui, struct pdn_context* context, const char* font,
+		const char* style) {
+
 	enum pdn_result result;
 
 	auto settings = context->settings;
@@ -49,19 +52,18 @@ enum pdn_result pdn_ui_new(struct pdn_ui* ui, struct pdn_context* context) {
 	// TODO: Can this load a font from PhysFS?
 	// TODO: Font size/scaling config.
 	// TODO: Separate out font loading infrastructure.
-	const char* path = "res/font/unitblock/unitblock.ttf";
-	ui->font = nk_allegro5_font_create_from_file(path, 18, 0);
+	ui->font = nk_allegro5_font_create_from_file(font, 18, 0);
 	if(!ui->font) {
-		return PDN_LOG_RESULT_PATH(al_fopen, path, PDN_RESULT_ERROR);
+		return PDN_LOG_RESULT_PATH(al_fopen, font, PDN_RESULT_ERROR);
 	}
 
 	ui->context = nk_allegro5_init(
 			ui->font, context->display->display,
 			settings->width, settings->height);
 
-	result = pdn_ui_load_style(ui, "res/style/game_nk_style.bin");
+	result = pdn_ui_load_style(ui, style);
 	if(result) {
-		(void) PDN_LOG_RESULT(pdn_ui_load_style, result);
+		(void) PDN_LOG_RESULT_PATH(pdn_ui_load_style, style, result);
 	}
 
 	return PDN_RESULT_OK;

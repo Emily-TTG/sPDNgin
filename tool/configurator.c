@@ -42,8 +42,8 @@ static void read_style(const char* path, color_table_t* table) {
 int main(int argc, char** argv) {
 	static color_table_t color_table;
 
-	if(argc != 2) {
-		puts("usage: configurator <output>");
+	if(argc != 3) {
+		puts("usage: configurator <output> <font>");
 		return EXIT_FAILURE;
 	}
 
@@ -68,8 +68,7 @@ int main(int argc, char** argv) {
 	al_register_event_source(queue, al_get_keyboard_event_source());
 	al_register_event_source(queue, al_get_display_event_source(display));
 
-	const char* font_path = "res/font/unitblock/unitblock.ttf";
-	NkAllegro5Font* font = nk_allegro5_font_create_from_file(font_path, 18, 0);
+	NkAllegro5Font* font = nk_allegro5_font_create_from_file(argv[2], 18, 0);
 
 	struct nk_context* context = nk_allegro5_init(
 			font, display, WIDTH, HEIGHT);

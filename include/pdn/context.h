@@ -11,6 +11,11 @@ struct pdn_scene;
 
 struct ecs_world_t;
 
+struct pdn_context_options {
+	const char* font;
+	const char* style;
+};
+
 struct pdn_context {
 	struct pdn_context_detail* detail;
 
@@ -20,7 +25,9 @@ struct pdn_context {
 	struct pdn_scene* scene;
 };
 
-enum pdn_result pdn_context_new(struct pdn_context*, int, char**);
+enum pdn_result pdn_context_new(
+		struct pdn_context*, struct pdn_context_options*, int, char**);
+
 void pdn_context_delete(struct pdn_context*);
 
 // Blocks until user-initiated exit.

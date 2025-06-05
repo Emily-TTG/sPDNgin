@@ -4,9 +4,6 @@
 cmake-build*
 build*
 
-res/map/*.lua
-res/tile/*.lua
-
 *.log
 
 *.tiled-session

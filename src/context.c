@@ -107,7 +107,8 @@ static ALLEGRO_BITMAP* pdn_al_load_stbi_png(const char* path, int flags) {
 }
 
 enum pdn_result pdn_context_new(
-		struct pdn_context* context, int argc, char** argv) {
+		struct pdn_context* context, struct pdn_context_options* options,
+		int argc, char** argv) {
 
 	enum pdn_result result;
 
@@ -141,7 +142,7 @@ enum pdn_result pdn_context_new(
 		return PDN_LOG_RESULT(pdn_settings_load, result);
 	}
 
-	result = pdn_ui_new(context->ui, context);
+	result = pdn_ui_new(context->ui, context, options->font, options->style);
 	if(result) {
 		pdn_context_delete(context);
 		return PDN_LOG_RESULT(pdn_ui_new, result);
